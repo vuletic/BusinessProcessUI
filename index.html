@@ -5,7 +5,7 @@
     <link href="assets/components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
-<body ng-app="app">
+<body ng-app="app" ng-controller="rootController as rc">
 
     <div>
         <ui-view></ui-view>
@@ -15,6 +15,8 @@
     <script src="assets/components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="assets/components/angular/angular.js"></script>
     <script src="assets/components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="assets/components/angular-localstorage/angular-localstorage.js"></script>
+    <script src="assets/components/angular-jwt/dist/angular-jwt.js"></script>
 
     <script src="app.module.js"></script>
     <script src="app.route.js"></script>
