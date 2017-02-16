@@ -5,15 +5,22 @@
 		.module('app')
 		.controller('homeController', homeController);
 
-	homeController.$inject = ['$http'];
-    function homeController($http) {
+	homeController.$inject = ['rootService'];
+    function homeController(rootService) {
         var hc = this;
         hc.home = "Home";
-/*
-        $http.get("http://kermit:kermit@localhost:8080/activiti-rest/service/identity/groups").then(function (response) {
-                alert(JSON.stringify(response.data));
-            });*/
 
+        rootService.getProcess('process:1:20008').then(function(response){
+            hc.process = response;
+            console.log(hc.process);
+        });
+
+
+        rootService.getProcessInstance('').then(function(response){
+            hc.process = response.data;
+            console.log(hc.process);
+        });
+        
     }
 
 

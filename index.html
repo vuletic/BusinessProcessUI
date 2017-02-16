@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Title</title>
+    <title>FTN - poslovna služba</title>
     <link href="assets/components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
 </head>
-<body ng-app="app" ng-controller="rootController as rc">
+<body ng-app="app">
 
     <div>
         <ui-view></ui-view>
@@ -15,13 +15,18 @@
     <script src="assets/components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="assets/components/angular/angular.js"></script>
     <script src="assets/components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="assets/components/angular-localstorage/angular-localstorage.js"></script>
+    <script src="assets/components/ngstorage/ngStorage.js"></script>
     <script src="assets/components/angular-jwt/dist/angular-jwt.js"></script>
 
-    <script src="app.module.js"></script>
-    <script src="app.route.js"></script>
+    <script src="app/app.module.js"></script>
+    <script src="app/app.route.js"></script>
 
+    <script src="app/components/root/root.controller.js"></script>
+    <script src="app/components/root/root.service.js"></script>
     <script src="app/components/home/home.controller.js"></script>
+    <script src="app/components/login/login.controller.js"></script>
+    <script src="app/components/login/login.service.js"></script>
+    
 
  
 </body>

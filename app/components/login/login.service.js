@@ -6,43 +6,50 @@
         .service('loginService', loginService);
 
     //$q?
-    processService.$inject = ['$http', '$window', '$localStorage', 'jwtHelper'];
-    function loginService($http, $window, $localStorage, jwtHelper){
+    loginService.$inject = ['$http', '$window', '$localStorage', 'jwtHelper', '$state'];
+    function loginService($http, $window, $localStorage, jwtHelper, $state){
 
 
-        function login(username, password, callback) {
+        function login(username, password) {
+            var url = 'http://localhost:8080/activiti-rest/service/identity/users/' + username;
+            var auth = "Basic " + btoa(username + ':' + password);
+            $http.defaults.headers.common['Authorization'] = auth;
 
+            var req = {
+             method: 'GET',
+             url: url,
+             headers: {
+                'Content-Type' : 'application/json'             },
+            };
 
-            $.post( '/api/korisnici/login', { username: username, password: password } )
-                .done(function (response) {
-                    // ukoliko postoji token, prijava je uspesna
+            return $http(req).then(
+                function successCallback(response) {
+                    
                     if (response) {
-                        // korisnicko ime, token i rola (ako postoji) cuvaju se u lokalnom skladištu
-                        var currentUser = { username: username, token: response }
-                        var tokenPayload = jwtHelper.decodeToken(response);
-                        if(tokenPayload.role){
-                            currentUser.role = tokenPayload.role;
-                        }
-                        // prijavljenog korisnika cuva u lokalnom skladistu
+                        var currentUser = response.data;
+                        currentUser.authorization = auth;
                         $localStorage.currentUser = currentUser;
-                        // jwt token dodajemo u to auth header za sve $http zahteve
-                        $http.defaults.headers.common.Authorization = response;
-                        console.log(response);
-                        // callback za uspesan login
-                        callback(true);
+                        return currentUser;
+                        //$state.go('root.home');
+                        //$window.location = "/activiti-rest/index.html#!";
+                        //$window.location.reload();
                     } else {
-                        // callback za neuspesan login
-                        callback(false);
+                        console.log("err");
                     }
+                },function errorCallback(response){
+                    console.log("error");
                 });
+                
 
         }
 
         function logout() {
             // uklonimo korisnika iz lokalnog skladišta
             delete $localStorage.currentUser;
-            $http.defaults.headers.common.Authorization = '';
-            $window.location = "#/main";
+            //$http.defaults.headers.common.Authorization = '';
+            $state.go('root.login');
+            //$window.location = "/activiti-rest/index.html#!/login";
+            //$window.location.reload();
         }
 
         function getCurrentUser() {
