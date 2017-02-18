@@ -5,9 +5,8 @@
         </div>
         <ul class="nav navbar-nav">
           <li class="active"><a href="#">Početna strana</a></li>
-          <li><a href="#">Page 1</a></li>
-          <li><a href="#">Page 2</a></li>
-          <li><a href="#">Page 3</a></li>
+          <li ng-show="rc.currentUser.isDoktorant && !rc.currentUser.startedProcess"><a href ng-click="rc.startProcess()">Prijavi temu za disertaciju</a></li>
+          <li><a href="#">Pogledaj zadatke (?)</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right" style="position: relative; right: 50px">
             <li ng-show="rc.currentUser"><a href><span class="glyphicon glyphicon-user"></span> &nbsp;{{rc.currentUser.id}}</a></li>
