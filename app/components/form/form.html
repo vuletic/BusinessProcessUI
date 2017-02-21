@@ -1,0 +1,19 @@
+<div>
+
+
+   <form class="col-sm-offset-2 col-sm-8">
+   		<div class="form-group row" ng-repeat="property in fc.form.formProperties">
+   			<label for="{{property.id}}" class="col-sm-3">{{property.name}}</label>
+   			<div class="col-sm-9">
+   				<input ng-hide="property.type == 'boolean'" class="form-control" type="text" name="{{property.id}}" id="{{property.id}}">
+   				<input ng-show="property.type == 'boolean'" class="form-control" type="checkbox" name="{{property.id}}" id="{{property.id}}">
+   			</div>
+   			
+   		</div>
+   		
+   		<button type="submit" class="btn btn-primary">Submit</button>
+   </form>
+
+   
+
+</div>

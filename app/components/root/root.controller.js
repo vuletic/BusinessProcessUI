@@ -24,6 +24,7 @@
                     rc.currentUser.isDoktorant = (rc.currentUser.groups.filter(function(e) { return e.id == 'user'; }).length > 0);
                 });
                 rootService.getProcessInstanceStartedByUser(rc.currentUser.id).then(function(response){
+                    //console.log(response.data);
                     if(response.data.length > 0)
                         rc.currentUser.startedProcess = response.data[0].id;
                     else
@@ -47,7 +48,7 @@
                     console.log(response);
                     var taskId = response.data[0].id;
                     console.log(taskId);
-                    $state.go('root.home'); //root.form sa parametrom
+                    $state.go('root.form', {taskId: taskId}); //root.form sa parametrom
                 });
 
             });

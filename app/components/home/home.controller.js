@@ -20,16 +20,16 @@
             hc.process = response.data;
             console.log(hc.process);
         });
-
-        rootService.getTask('').then(function(response){
+/*
+        rootService.getTask(32507).then(function(response){
             hc.process = response.data;
             console.log(hc.process);
-        });
-
-        /*rootService.getAllVariables('22520').then(function(response){
-            hc.process = response;
-            //console.log(hc.process);
         });*/
+
+        rootService.getAllVariables(32501).then(function(response){
+            hc.process = response;
+            console.log(hc.process);
+        });
 
 
         /*rootService.getTaskAssignee('kermit').then(function(response){
@@ -47,7 +47,7 @@
             console.log(hc.process);
         });*/
 
-        /*rootService.getForm('22547').then(function(response){
+      /*  rootService.getForm(32507).then(function(response){
             hc.process = response;
             console.log(hc.process);
         });*/

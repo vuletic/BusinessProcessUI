@@ -35,7 +35,7 @@
 
         function startProcess(id, initiator) { //process:1:20008
             var url = 'service/runtime/process-instances';
-            console.log($http.defaults.headers.common['Authorization']);
+            
             var req = {
              method: 'POST',
              url: url,
@@ -362,7 +362,7 @@
              method: 'POST',
              url: url,
              headers: {'Content-Type' : 'application/json'},
-             data: {"variables":[{"name" : "initiator","value" : id,"operation" : "equals","type" : "string"}]}
+             data: {"variables":[{"name" : "doktorant","value" : id,"operation" : "equals","type" : "string"}]}
             };
 
             return $http(req).then(
