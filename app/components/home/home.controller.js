@@ -10,13 +10,13 @@
         var hc = this;
         hc.home = "Home";
 
-        /*rootService.getProcess('process:1:20008').then(function(response){
+        /*rootService.getProcess('process:2:40004').then(function(response){
             hc.process = response;
             console.log(hc.process);
         });*/
 
 
-        rootService.getProcessInstance('').then(function(response){
+       rootService.getProcessInstance('').then(function(response){
             hc.process = response.data;
             console.log(hc.process);
         });
@@ -26,13 +26,13 @@
             console.log(hc.process);
         });*/
 
-        rootService.getAllVariables(32501).then(function(response){
+        /*rootService.getAllVariables(32501).then(function(response){
             hc.process = response;
             console.log(hc.process);
-        });
+        });*/
 
 
-        /*rootService.getTaskAssignee('kermit').then(function(response){
+      /*  rootService.getTaskAssignee('kermit').then(function(response){
             hc.process = response.data;
             console.log(hc.process);
         });
@@ -42,7 +42,7 @@
             console.log(hc.process);
         });
 
-        rootService.getTaskCandidateGroup('referent').then(function(response){
+        rootService.getTaskCandidateGroup('user').then(function(response){
             hc.process = response.data;
             console.log(hc.process);
         });*/

@@ -222,13 +222,6 @@
         function submitForm(task_id, properties){
             var url = 'service/form/form-data';
 
-           /* "properties" : [
-                {
-                  "id" : "room",
-                  "value" : "normal"
-                }
-              ]*/
-
             var req = {
              method: 'POST',
              url: url,
@@ -248,7 +241,7 @@
                 });  
         }
 
-         function getTaskAssignee(user){
+        function getTaskAssignee(user){
             var url = 'service/runtime/tasks?assignee=' + user; 
 
             var req = {
@@ -377,25 +370,71 @@
                 });  
 
         }
-           
+
+        function setVariable(id, properties){
+            var url = 'service/runtime/process-instances/' + id + '/variables';
+            var data = JSON.stringify(properties);
+
+            var req = {
+             method: 'PUT',
+             url: url,
+             //headers: {'Content-Type' : 'raw'},
+             data: data
+            };
+
+            return $http(req).then(
+                function successCallback(response) {
+                    if (response) {
+                        return response.data;
+                    } else {
+                        console.log("err");
+                    }
+                },function errorCallback(response){
+                    console.log("error");
+                }); 
+        }
+
+        function getMembersOfGroup(group){
+            var url = 'service/identity/users?memberOfGroup=' + group; 
+
+            var req = {
+             method: 'GET',
+             url: url,
+             headers: {'Content-Type' : 'application/json'}
+            };
+
+            return $http(req).then(
+                function successCallback(response) {
+                    if (response) {
+                        return response.data;
+                    } else {
+                        console.log("err");
+                    }
+                },function errorCallback(response){
+                    console.log("error");
+                });     
+        }
+
 
 		return {
-	             getProcess: getProcess,
-	             startProcess: startProcess,
-	             getProcessInstance: getProcessInstance,
-                getTask: getTask,
-                completeTask: completeTask,
-                claimTask: claimTask,
-                getTaskVariables: getTaskVariables,
-                setTaskVariables: setTaskVariables,
-                getForm: getForm,
-                submitForm: submitForm,
-                getTaskAssignee: getTaskAssignee,
-                getTaskCandidateUser: getTaskCandidateUser,
-                getTaskCandidateGroup: getTaskCandidateGroup,
-                getAllVariables: getAllVariables,
-                getUserGroups: getUserGroups,
-                getProcessInstanceStartedByUser: getProcessInstanceStartedByUser
+	        getProcess: getProcess,
+	        startProcess: startProcess,
+	        getProcessInstance: getProcessInstance,
+          getTask: getTask,
+          completeTask: completeTask,
+          claimTask: claimTask,
+          getTaskVariables: getTaskVariables,
+          setTaskVariables: setTaskVariables,
+          getForm: getForm,
+          submitForm: submitForm,
+          getTaskAssignee: getTaskAssignee,
+          getTaskCandidateUser: getTaskCandidateUser,
+          getTaskCandidateGroup: getTaskCandidateGroup,
+          getAllVariables: getAllVariables,
+          getUserGroups: getUserGroups,
+          getProcessInstanceStartedByUser: getProcessInstanceStartedByUser,
+          setVariable: setVariable,
+          getMembersOfGroup: getMembersOfGroup
 	    };
 
     }
