@@ -69,6 +69,41 @@
                     });
 
                 });
+            }else if(fc.taskName == "Odluka o prihvatanju i odredjivanje mentora"){
+                rootService.getMembersOfGroup('profesor').then(function(response){
+                    fc.ftn = response.data;
+                    fc.state = 2;
+                });
+            }else if(fc.taskName == "Predlog komisije o oceni" || fc.taskName == "Odluka o komisiji za ocenu"){
+                rootService.getMembersOfGroup('profesor').then(function(response){
+                    fc.all = response.data;
+                    for(var i in fc.all){
+                        fc.mails[fc.all[i].id] = fc.all[i].email;
+                    }
+                    rootService.getMembersOfGroup('ftn').then(function(response){
+                        fc.ftn = response.data
+                        fc.others = fc.filter(fc.all, fc.ftn);
+                        fc.state = 3;
+                        if(fc.taskName == "Odluka o komisiji za ocenu"){
+                            rootService.getVariable(fc.processInstanceId, "clan1_komisija2").then(function(response){
+                                fc.formData['clan1_komisija2'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan2_komisija2").then(function(response){
+                                fc.formData['clan2_komisija2'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan3_komisija2").then(function(response){
+                                fc.formData['clan3_komisija2'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan4_komisija2").then(function(response){
+                                fc.formData['clan4_komisija2'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan5_komisija2").then(function(response){
+                                fc.formData['clan5_komisija2'] = response.value;
+                            });
+                        }
+
+                    });
+                });
             }else{
                 rootService.getForm(fc.taskId).then(function(response){
                     fc.form = response;
@@ -134,9 +169,26 @@
                 properties.push(obj3);
                 properties.push(obj4);
                 properties.push(obj5);
+                properties.push(obj6);
                 rootService.setVariable(fc.processInstanceId, properties);
                 $timeout(fc.submit, 500);
-            //}else if(fc.taskName == "Predlog komisije o podobnosti"){
+            }else if(fc.taskName == "Odluka o komisiji za ocenu"){
+                var properties = [];
+                var obj = {"name": "komisija2email", "value": [], "scope": "local"};
+                var obj2 = {"name": "komisija2", "value": [], "scope": "local"};
+                var keys = Object.keys(fc.formData);
+                for(var key in keys){
+                    var k = keys[key];
+                    var temp = {};
+                    temp.id = k;
+                    temp.value = fc.formData[k];
+                    obj.value.push(fc.mails[temp.value]);
+                    obj2.value.push(temp.value);
+                }
+                properties.push(obj);
+                properties.push(obj2);
+                rootService.setVariable(fc.processInstanceId, properties);
+                $timeout(fc.submit, 500);
 
             }else{
                 fc.submit();

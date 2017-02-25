@@ -17,7 +17,7 @@
          <!-- SPECIAL CASES -->
          <div ng-if="fc.state == 1">
             <div class="form-group row">
-               <label class="col-sm-3">Član 1</label>
+               <label class="col-sm-3">Član 1 (Šef)</label>
                <div class="col-sm-9">
                   <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.ftn" ng-model="fc.formData['clan1_komisija1']"></select>
                   </div>
@@ -48,7 +48,54 @@
    		    </div>
          </div>
 
-   		<button type="submit" class="col-sm-offset-11 btn btn-primary" ng-click="fc.processData()" style="margin-top: 30px;">Submit</button>
+         <div ng-if="fc.state == 2">
+            <div class="form-group row">  
+               <label for="prihvacen_izvestaj1" class="col-sm-7">Prihvacen izvestaj</label>
+               <input type="checkbox" name="prihvacen_izvestaj1" id="prihvacen_izvestaj1" ng-model="fc.formData['prihvacen_izvestaj1']" ng-init="fc.formData['prihvacen_izvestaj1']=false" style="width: 20px; height: 20px; position: relative; top: -5px;">
+            </div>
+
+            <div class="form-group row">
+               <label class="col-sm-3">Mentor</label>
+               <div class="col-sm-9">
+                  <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.ftn" ng-model="fc.formData['mentor']"></select>
+                  </div>
+            </div>
+         </div>
+
+         <div ng-if="fc.state == 3">
+            <div class="form-group row">
+               <label class="col-sm-3">Član 1 (Šef)</label>
+               <div class="col-sm-9">
+                  <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.ftn" ng-model="fc.formData['clan1_komisija2']"></select>
+                  </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-sm-3">Član 2</label>
+               <div class="col-sm-9">
+                  <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.ftn" ng-model="fc.formData['clan2_komisija2']"></select>
+                  </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-sm-3">Član 3</label>
+               <div class="col-sm-9">
+                  <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.ftn" ng-model="fc.formData['clan3_komisija2']"></select>
+                  </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-sm-3">Član 4</label>
+               <div class="col-sm-9">
+                  <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.ftn" ng-model="fc.formData['clan4_komisija2']"></select>
+                  </div>
+            </div>
+            <div class="form-group row">
+               <label class="col-sm-3">Član 5</label>
+               <div class="col-sm-9">
+                  <select class="form-control" ng-options="profesor.id as profesor.lastName for profesor in fc.others" ng-model="fc.formData['clan5_komisija2']"></select>
+                  </div>
+             </div>
+         </div>
+
+   		<button type="submit" class="col-sm-offset-11 btn btn-primary" ng-click="fc.processData()" style="margin-top: 30px;">Potvrdi</button>
    </form>
 
    
