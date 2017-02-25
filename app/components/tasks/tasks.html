@@ -4,7 +4,7 @@
 
 	
 		<div class="list-group col-sm-offset-2 col-sm-8" ng-repeat="task in tc.tasks">
-		    <a href class="list-group-item" ng-click="tc.goToForm(task.id, task.name, task.processInstanceId)"><h3>{{task.name}}</h3><br/><span>Doktorant: </span></a>
+		    <a href class="list-group-item" ng-click="tc.goToForm(task.id, task.name, task.processInstanceId)"><h3>{{task.name}}</h3><br/><span>Doktorant: {{tc.starters[task.processInstanceId]}}</span></a>
 		</div>
 
 

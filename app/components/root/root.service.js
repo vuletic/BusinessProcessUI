@@ -142,61 +142,6 @@
                 });  
         }
 
-
-        function getTaskVariables(task_id, variable){ //// VEROVATNO NE TREBA
-            var url = 'service/runtime/tasks/' + taskId + '/variables/' + variable;
-
-            var req = {
-             method: 'GET',
-             url: url,
-             headers: {'Content-Type' : 'application/json'}
-            };
-
-            return $http(req).then(
-                function successCallback(response) {
-                    if (response) {
-                        return response.data;
-                    } else {
-                        console.log("err");
-                    }
-                },function errorCallback(response){
-                    console.log("error");
-                });  
-        }
-
-        function setTaskVariables(id, variables){
-            var url = 'service/runtime/tasks/' + taskId + '/variables/';
-
-         /*   [
-              {
-                "name" : "myTaskVariable",
-                "scope" : "local",
-                "type" : "string",
-                "value" : "Hello my friend"
-              },
-              {
-
-              }
-            ]*/
-
-            var req = {
-             method: 'PUT',
-             url: url,
-             headers: {'Content-Type' : 'application/json'},
-             data: variables     // pitanje je da li ovo radi
-            };
-
-            return $http(req).then(
-                function successCallback(response) {
-                    if (response) {
-                        return response.data;
-                    } else {
-                        console.log("err");
-                    }
-                },function errorCallback(response){
-                    console.log("error");
-                });  
-        }
 		
          function getForm(task_id){
             var url = 'service/form/form-data?taskId=' + task_id;
@@ -326,6 +271,28 @@
 
         }
 
+        function getVariable(id, name){
+            var url = 'service/runtime/process-instances/' + id + '/variables/' + name; 
+
+            var req = {
+             method: 'GET',
+             url: url,
+             headers: {'Content-Type' : 'application/json'}
+            };
+
+            return $http(req).then(
+                function successCallback(response) {
+                    if (response) {
+                        return response.data;
+                    } else {
+                        console.log("err");
+                    }
+                },function errorCallback(response){
+                    console.log("error");
+                });  
+
+        }
+
          function getUserGroups(id){
             var url = 'service/identity/groups?member=' + id; 
 
@@ -415,6 +382,28 @@
                 });     
         }
 
+        function getUser(user){
+            var url = 'service/identity/users/' + user; 
+
+            var req = {
+             method: 'GET',
+             url: url,
+             headers: {'Content-Type' : 'application/json'}
+            };
+
+            return $http(req).then(
+                function successCallback(response) {
+                    if (response) {
+                        return response.data;
+                    } else {
+                        console.log("err");
+                    }
+                },function errorCallback(response){
+                    console.log("error");
+                });     
+        }
+
+
 
 		return {
 	        getProcess: getProcess,
@@ -423,18 +412,18 @@
           getTask: getTask,
           completeTask: completeTask,
           claimTask: claimTask,
-          getTaskVariables: getTaskVariables,
-          setTaskVariables: setTaskVariables,
           getForm: getForm,
           submitForm: submitForm,
           getTaskAssignee: getTaskAssignee,
           getTaskCandidateUser: getTaskCandidateUser,
           getTaskCandidateGroup: getTaskCandidateGroup,
           getAllVariables: getAllVariables,
+          getVariable: getVariable,
           getUserGroups: getUserGroups,
           getProcessInstanceStartedByUser: getProcessInstanceStartedByUser,
           setVariable: setVariable,
-          getMembersOfGroup: getMembersOfGroup
+          getMembersOfGroup: getMembersOfGroup,
+          getUser: getUser
 	    };
 
     }

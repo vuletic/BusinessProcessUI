@@ -10,20 +10,39 @@
         var tc = this;
         tc.currentUser = $scope.$parent.rc.currentUser;
         tc.tasks = [];
+        tc.starters = {};
 
         rootService.getTaskAssignee(tc.currentUser.id).then(function(response){
             console.log(response.data);
+            var tmp = [];
+            var j = 0;
             for (var i in response.data){
+                tmp[i] = response.data[i];
                 tc.tasks.push(response.data[i]);
-            }
+                rootService.getVariable(response.data[i].processInstanceId, "doktorant").then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        tc.starters[tmp[j].processInstanceId] = response.firstName + " " + response.lastName;
+                        j++; 
+                    });
+                });
+            }  
             console.log(tc.tasks);
         });
 
         rootService.getTaskCandidateUser(tc.currentUser.id).then(function(response){
             console.log(response.data);
+            var tmp = [];
+            var j = 0;
             for (var i in response.data){
+                tmp[i] = response.data[i];
                 tc.tasks.push(response.data[i]);
-            }  // sto ne radi concat?
+                rootService.getVariable(response.data[i].processInstanceId, "doktorant").then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        tc.starters[tmp[j].processInstanceId] = response.firstName + " " + response.lastName;
+                        j++; 
+                    });
+                });
+            }  
             console.log(tc.tasks);
         });
 

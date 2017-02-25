@@ -40,7 +40,34 @@
                         fc.ftn = response.data
                         fc.others = fc.filter(fc.all, fc.ftn);
                         fc.state = 1;
+                        if(fc.taskName == "Odluka o komisiji za podobnost"){
+                            rootService.getVariable(fc.processInstanceId, "clan1_komisija1").then(function(response){
+                                fc.formData['clan1_komisija1'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan2_komisija1").then(function(response){
+                                fc.formData['clan2_komisija1'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan3_komisija1").then(function(response){
+                                fc.formData['clan3_komisija1'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan4_komisija1").then(function(response){
+                                fc.formData['clan4_komisija1'] = response.value;
+                            });
+                            rootService.getVariable(fc.processInstanceId, "clan5_komisija1").then(function(response){
+                                fc.formData['clan5_komisija1'] = response.value;
+                            });
+                        }
+
                     });
+                });
+            }else if(fc.taskName == "Konacan predlog naslova"){
+                rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+                    rootService.getVariable(fc.processInstanceId, "naslov_disertacije").then(function(response){
+                        fc.formData['naslov_disertacije'] = response.value;
+                    });
+
                 });
             }else{
                 rootService.getForm(fc.taskId).then(function(response){
@@ -88,6 +115,11 @@
             if(fc.taskName == "Odluka o komisiji za podobnost"){
                 var properties = [];
                 var obj = {"name": "komisija1email", "value": [], "scope": "local"};
+                var obj2 = {"name": "komisija1", "value": [], "scope": "local"};
+                var obj3 = {"name": "potpisuju1", "value": 0, "scope": "local", "type": "integer"};
+                var obj4 = {"name": "potpisuju2", "value": 0, "scope": "local", "type": "integer"};
+                var obj5 = {"name": "prisutnih", "value": 0, "scope": "local", "type": "integer"};
+                var obj6 = {"name": "fakultetemail", "value": "vuletic93@gmail.com", "scope": "local", "type": "string"};
                 var keys = Object.keys(fc.formData);
                 for(var key in keys){
                     var k = keys[key];
@@ -95,8 +127,13 @@
                     temp.id = k;
                     temp.value = fc.formData[k];
                     obj.value.push(fc.mails[temp.value]);
+                    obj2.value.push(temp.value);
                 }
                 properties.push(obj);
+                properties.push(obj2);
+                properties.push(obj3);
+                properties.push(obj4);
+                properties.push(obj5);
                 rootService.setVariable(fc.processInstanceId, properties);
                 $timeout(fc.submit, 500);
             //}else if(fc.taskName == "Predlog komisije o podobnosti"){

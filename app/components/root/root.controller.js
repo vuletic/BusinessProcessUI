@@ -63,13 +63,14 @@
         }
 
         rc.startProcess = function(){
-            rootService.startProcess('process:2:40004', rc.currentUser.id).then(function(response){
+            rootService.startProcess('process:3:55004', rc.currentUser.id).then(function(response){
                 rc.currentUser.startedProcess = response.id;
                 rootService.getTaskAssignee(rc.currentUser.id).then(function(response){
                     console.log(response);
                     var taskId = response.data[0].id;
+                    var name = response.data[0].name;
                     console.log(taskId);
-                    $state.go('root.form', {taskId: taskId}, {reload: true}); //root.form sa parametrom
+                    $state.go('root.form', {taskId: taskId, taskName:name, processInstanceId: 0}, {reload: true}); //root.form sa parametrom
                 });
 
             });
