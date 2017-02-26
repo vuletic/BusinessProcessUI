@@ -63,7 +63,7 @@
         }
 
         rc.startProcess = function(){
-            rootService.startProcess('process:3:55004', rc.currentUser.id).then(function(response){
+            rootService.startProcess('process:6:72504', rc.currentUser.id).then(function(response){
                 rc.currentUser.startedProcess = response.id;
                 rootService.getTaskAssignee(rc.currentUser.id).then(function(response){
                     console.log(response);

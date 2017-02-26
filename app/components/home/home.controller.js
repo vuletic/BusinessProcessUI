@@ -10,11 +10,6 @@
         var hc = this;
         hc.home = "Home";
 
-        /*rootService.getProcess('process:3:55004').then(function(response){
-            hc.process = response;
-            console.log(hc.process);
-        });*/
-
 
        rootService.getProcessInstance('').then(function(response){
             hc.process = response.data;

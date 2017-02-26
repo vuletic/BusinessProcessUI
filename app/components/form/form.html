@@ -2,16 +2,40 @@
 
 <h2>{{fc.task.name}}</h2>
 
+   <div ng-if="fc.opis" class="col-sm-offset-3 col-sm-6" style="margin-top: 50px;">
+      <p>{{fc.opis}}</p>
+   </div>
+
+   <div ng-if="fc.vreme_odbrane"  class="col-sm-offset-3 col-sm-6" style="margin-top: 50px;">
+      <p><b>Mesto odbrane:</b> &nbsp; &nbsp;{{fc.mesto_odbrane}}</p>
+      <p><b>Vreme odbrane:</b> &nbsp; &nbsp;{{fc.vreme_odbrane | date:"medium"}} </p> 
+   </div>
+
    <form class="col-sm-offset-3 col-sm-6" style="margin-top: 50px;">
-   		<div class="form-group row" ng-repeat="property in fc.form.formProperties track by $index">
+      <div class="row" style="margin-bottom: 40px;">
+         <label ng-if="fc.taskName == 'Odobravanje komisije' || fc.taskName == 'Potvrdi komisiju'" class="col-sm-3">Komisija: </label>
+         <label ng-repeat="clan in fc.komisija track by $index" class="col-sm-offset-3 col-sm-9">{{clan}}</label>
+   	</div>
+      	<div class="form-group row" ng-repeat="property in fc.form.formProperties track by $index">
             <!-- TEXT FIELD -->
-            <label for="{{property.id}}" class="col-sm-3" ng-if="property.type != 'boolean'" >{{property.name}}</label>
-   			<div class="col-sm-9" ng-if="property.type != 'boolean'">
+            <label for="{{property.id}}" class="col-sm-3" ng-if="property.type == 'string'" >{{property.name}}</label>
+   			<div class="col-sm-9" ng-if="property.type == 'string'">
    				<input  class="form-control" type="text" name="{{property.id}}" id="{{property.id}}" ng-model="fc.formData[property.id]" ng-init="fc.formData[property.id]=''">   
    			</div>
             <!-- CHECK BOX -->
             <label for="{{property.id}}" class="col-sm-7" ng-if="property.type == 'boolean'">{{property.name}}</label>
-            <input ng-if="property.type == 'boolean'" type="checkbox" name="{{property.id}}" id="{{property.id}}" ng-model="fc.formData[property.id]" ng-init="fc.formData[property.id]=false" style="width: 20px; height: 20px; position: relative; top: -5px;">			
+            <input ng-if="property.type == 'boolean'" type="checkbox" name="{{property.id}}" id="{{property.id}}" ng-model="fc.formData[property.id]" ng-init="fc.formData[property.id]=false" style="width: 20px; height: 20px; position: relative; top: -5px;">		
+            <!--- INTEGER -->
+            <label for="{{property.id}}" class="col-sm-3" ng-if="property.type == 'long'" >{{property.name}}</label>
+            <div class="col-sm-3" ng-if="property.type == 'long'">
+               <input class="form-control" type="number" name="{{property.id}}" id="{{property.id}}" ng-model="fc.formData[property.id]" ng-init="fc.formData[property.id]=5" min="5" max="10">   
+            </div>
+            <!-- DATE -->
+            <label for="{{property.id}}" class="col-sm-3" ng-if="property.type == 'date'" >{{property.name}}</label>
+            <div class="col-sm-9" ng-if="property.type == 'date'">
+               <input class="form-control" type="datetime-local" name="{{property.id}}" id="{{property.id}}" ng-model="fc.formData[property.id]" min='{{fc.minDate | date: "yyyy-MM-ddTHH:mm:ss"}}' >   
+            </div>
+
    		</div>
 
          <!-- SPECIAL CASES -->

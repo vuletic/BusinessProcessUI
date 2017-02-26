@@ -5,12 +5,14 @@
 		.module('app')
 		.controller('formController', formController);
 
-	formController.$inject = ['rootService', '$stateParams', '$state', '$timeout'];
-    function formController(rootService, $stateParams, $state, $timeout) {
+	formController.$inject = ['rootService', '$stateParams', '$state', '$timeout', '$scope'];
+    function formController(rootService, $stateParams, $state, $timeout, $scope) {
         var fc = this;
         fc.formData = {};
         fc.state;
-        
+        fc.currentUser = $scope.$parent.rc.currentUser;
+        fc.komisija = [];
+
         fc.taskId = $stateParams.taskId;
         fc.taskName = $stateParams.taskName;
         fc.processInstanceId = $stateParams.processInstanceId;
@@ -18,6 +20,8 @@
         fc.ftn = [];
         fc.others = [];
         fc.mails = {};
+        fc.minDate = new Date();
+        fc.minDate.setDate(fc.minDate.getDate() + 1);
 
         fc.filter = function(arr1, arr2){
             var ret = [];
@@ -104,6 +108,85 @@
 
                     });
                 });
+            }else if(fc.taskName == "Zakazi vreme i mesto odbrane"){
+                rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+                    fc.formData.vreme_odbrane = new Date(fc.minDate.getFullYear(), fc.minDate.getMonth(), fc.minDate.getDate() + 1, 12,0,0,0);
+                });
+            }else if(fc.taskName == "Podnesi prijavu teme"){
+                rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+
+                    $timeout(function(){
+                        fc.formData.ime_doktoranta = fc.currentUser.firstName;
+                        fc.formData.prezime_doktoranta = fc.currentUser.lastName;
+                        }, 500);
+                    
+                });
+            }else if(fc.taskName == "Potpisi izvestaj" || fc.taskName == "Clanovi potpisuju izvestaje"){
+                var op = fc.taskName == "Potpisi izvestaj" ? "opis_podobnost":"opis_ocena"
+                rootService.getVariable(fc.processInstanceId, op).then(function(response){
+                    fc.opis = response.value;
+                });
+                rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+                });
+            }else if(fc.taskName == "Otvori dosije"){
+                rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+                    rootService.getVariable(fc.processInstanceId, "ime_doktoranta").then(function(response){
+                        fc.formData['ime_doktoranta'] = response.value;
+                    });
+                    rootService.getVariable(fc.processInstanceId, "prezime_doktoranta").then(function(response){
+                       fc.formData['prezime_doktoranta'] = response.value;
+                    });
+                });
+            }else if(fc.taskName == "Odobravanje komisije" || fc.taskName == "Potvrdi komisiju"){
+                var kom = fc.taskName == "Odobravanje komisije" ? "_komisija1":"_komisija2"; 
+                rootService.getVariable(fc.processInstanceId, "clan1" + kom).then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        fc.komisija.push(response.firstName + " " + response.lastName);
+                    });
+                });
+                rootService.getVariable(fc.processInstanceId, "clan2" + kom).then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        fc.komisija.push(response.firstName + " " + response.lastName);
+                    });
+                });
+                rootService.getVariable(fc.processInstanceId, "clan3" + kom).then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        fc.komisija.push(response.firstName + " " + response.lastName);
+                    });
+                });
+                rootService.getVariable(fc.processInstanceId, "clan4" + kom).then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        fc.komisija.push(response.firstName + " " + response.lastName);
+                    });
+                });
+                rootService.getVariable(fc.processInstanceId, "clan5" + kom).then(function(response){
+                    rootService.getUser(response.value).then(function(response){
+                        fc.komisija.push(response.firstName + " " + response.lastName);
+                    });
+                });
+                 rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+                });
+            }else if(fc.taskName == "Clanovi potvrdjuju prisustvo"){
+                rootService.getVariable(fc.processInstanceId, "pravo_vreme").then(function(response){
+                    fc.vreme_odbrane = response.value;
+                });
+                rootService.getVariable(fc.processInstanceId, "mesto_odbrane").then(function(response){
+                    fc.mesto_odbrane = response.value;
+                });
+                rootService.getForm(fc.taskId).then(function(response){
+                    fc.form = response;
+                    console.log(fc.form);
+                });
             }else{
                 rootService.getForm(fc.taskId).then(function(response){
                     fc.form = response;
@@ -189,6 +272,31 @@
                 properties.push(obj2);
                 rootService.setVariable(fc.processInstanceId, properties);
                 $timeout(fc.submit, 500);
+            }else if(fc.taskName == "Zakazi vreme i mesto odbrane"){    
+                var vo = fc.formData.vreme_odbrane;
+                fc.formData.vreme_odbrane = vo.getDate() + "-" + vo.getMonth() + "-" + vo.getFullYear() + " " + vo.getHours() + ":" + vo.getMinutes();
+                console.log(fc.formData.vreme_odbrane);
+                var properties = [];
+                vo = vo.toISOString();
+                var obj5 = {"name": "prisutnih", "value": 0, "scope": "local", "type": "integer"};
+                var obj6 = {"name": "pravo_vreme", "value": vo, "scope": "local", "type": "date"};
+                properties.push(obj5);
+                properties.push(obj6);
+                rootService.setVariable(fc.processInstanceId, properties);
+                $timeout(fc.submit, 500);
+
+            }else if(fc.taskName == "Clanovi potvrdjuju prisustvo"){
+                rootService.getVariable(fc.processInstanceId, "prisutnih").then(function(response){
+                    console.log("Pre: " + response.value);
+                    var pris = response.value + 1;
+                    console.log("Posle: " + pris);
+                    var properties = [];
+                    var obj5 = {"name": "prisutnih", "value": pris, "scope": "local", "type": "integer"};
+                    properties.push(obj5);
+                    rootService.setVariable(fc.processInstanceId, properties);
+                    $timeout(fc.submit, 500);
+                });
+
 
             }else{
                 fc.submit();
