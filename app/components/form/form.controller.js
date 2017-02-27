@@ -290,6 +290,9 @@
                     console.log("Pre: " + response.value);
                     var pris = response.value + 1;
                     console.log("Posle: " + pris);
+
+                    if(!fc.formData.prisustvo)
+                        pris -=1;
                     var properties = [];
                     var obj5 = {"name": "prisutnih", "value": pris, "scope": "local", "type": "integer"};
                     properties.push(obj5);
